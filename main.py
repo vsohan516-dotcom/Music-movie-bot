@@ -7,16 +7,8 @@ from threading import Thread
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
-import os
-
-# 🔐 TOKEN (safe from environment)
+# 🔐 TOKEN (safe)
 TOKEN = os.getenv("TOKEN")
-
-# 🌐 URL (Replit / Render)
-URL = "https://your-app-url.replit.app"
-
-# 🤖 TELEGRAM API
-TELEGRAM_API = f"https://api.telegram.org/bot{TOKEN}"
 
 # 🌐 Flask App
 app = Flask(__name__)
@@ -27,10 +19,12 @@ def home():
     return "🚀 Bot is Running"
 
 def run():
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=8080)  # ✅ FIXED PORT
 
 def keep_alive():
-    Thread(target=run).start()
+    t = Thread(target=run)
+    t.daemon = True
+    t.start()
 
 # ================= LOGGING =================
 logging.basicConfig(level=logging.INFO)
